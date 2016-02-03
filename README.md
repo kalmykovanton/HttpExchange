@@ -1,7 +1,7 @@
 # HttpExchange
 ItCourses Framework HttpExchange Component
 ## The most useful methods for working with HTTP requests.
-
+NOTE: In the development of this component, namely the implementation of the 'PSR-7: HTTP message interfaces' recommendations, there were moments when the inspiration left me, I lost the thread and the realization came to a standstill. In such situations, I have found strength and drew new ideas for this project from the developers of the Zend framework, for which many thanks to these guys. Also many thanks to one of the PSR-7 developers Matthew Weier O'Finney, for the wonderful articles, that helped me become uproarious what's what. See http://www.php-fig.org/psr/psr-7/, https://github.com/zendframework/zend-diactoros, https://mwop.net/blog/2015-01-26-psr-7-by-example.html, https://mwop.net/blog/2015-07-28-on-psr7-headers.html, http://weierophinney.github.io/2015-10-20-PSR-7-and-Middleware/#/. Maybe something was not completely realized or lost, and some things have been adapted to our personal project, so сomments and criticism welcome. PSR-7 - it was not easy, but it works :)
 Create new request instance:
 ```php
 use App\Http\Request\Request;

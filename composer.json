@@ -1,0 +1,21 @@
+{
+  "name": "HttpExchange",
+  "type": "library",
+  "description": "ItCourses Framework HttpExchange Component",
+  "keywords": [],
+  "homepage": "https://github.com/kalmykovanton/HttpExchange",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Anton Kalmykov",
+      "email": "a.kalmykov@outlook.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.9",
+    "psr/http-message": "1.0.*"
+  },
+  "autoload": {
+    "psr-4": {"HttpExchange\\": ""}
+  }
+}
