@@ -37,20 +37,19 @@ class Response extends Message implements ResponseInterface
      *
      * Example: $response = new Response(new Stream('php://temp', 'wb+'));
      *
-     * @param StreamInterface $stream   StreamInterface instance.
-     * @param string $statusCode        Response status code.
-     * @param string $reasonPhrase      Response reason phrase.
+     * @param Stream $stream        Stream instance.
+     * @param string $statusCode    Response status code.
+     * @param string $reasonPhrase  Response reason phrase.
      */
-    public function __construct(StreamInterface $stream, $statusCode = '', $reasonPhrase = '')
+    public function __construct(Stream $stream, $statusCode = '', $reasonPhrase = '')
     {
         parent::__construct();
         // Row stream for response body.
         $this->stream = $stream;
         // Set status code.
-        $this->statusCode = $this->checkStatusCode($statusCode);
+        $this->statusCode = ($statusCode === '') ? 200 : $this->checkStatusCode($statusCode);
         // Set reason phrase.
-        $this->checkReasonPhrase($reasonPhrase);
-        $this->reasonPhrase = $reasonPhrase;
+        $this->reasonPhrase = ($reasonPhrase === '') ? 'OK' : $this->checkReasonPhrase($reasonPhrase);
     }
 
     /**
@@ -87,11 +86,13 @@ class Response extends Message implements ResponseInterface
             );
         }
 
-        $this->checkReasonPhrase($reasonPhrase);
+        if ($reasonPhrase !== '') {
+            $this->checkReasonPhrase($reasonPhrase);
+        }
 
         $this->checkStatusCode($code);
         $clone = clone $this;
-        $clone->statusCode   = (int) $code;
+        $clone->statusCode = (int) $code;
 
         if ($reasonPhrase === '') {
             $clone->reasonPhrase = $this->reasonPhrases[$code];
