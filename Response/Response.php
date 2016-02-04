@@ -4,8 +4,8 @@ namespace HttpExchange\Response;
 
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 use HttpExchange\Common\Message;
-use HttpExchange\Common\Stream;
 use HttpExchange\Response\Helpers\ResponseHelper;
 
 /**
@@ -37,11 +37,11 @@ class Response extends Message implements ResponseInterface
      *
      * Example: $response = new Response(new Stream('php://temp', 'wb+'));
      *
-     * @param Stream $stream        Stream instance.
-     * @param string $statusCode    Response status code.
-     * @param string $reasonPhrase  Response reason phrase.
+     * @param StreamInterface $stream       StreamInterface instance.
+     * @param string $statusCode            Response status code.
+     * @param string $reasonPhrase          Response reason phrase.
      */
-    public function __construct(Stream $stream, $statusCode = '', $reasonPhrase = '')
+    public function __construct(StreamInterface $stream, $statusCode = '', $reasonPhrase = '')
     {
         parent::__construct();
         // Row stream for response body.

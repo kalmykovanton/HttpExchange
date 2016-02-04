@@ -3,10 +3,10 @@
 namespace HttpExchange\Request;
 
 use InvalidArgumentException;
-use HttpExchange\Common\Stream;
+use Psr\Http\Message\UriInterface;
+use Psr\Http\Message\StreamInterface;
 use HttpExchange\Request\Components\ServerRequestComponent;
 use HttpExchange\Request\Helpers\RequestHelper;
-use Psr\Http\Message\UriInterface;
 
 /**
  * Class Request.
