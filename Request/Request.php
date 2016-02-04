@@ -9,6 +9,7 @@ use Psr\Http\Message\UploadedFileInterface;
 use HttpExchange\Request\Components\ServerRequestComponent;
 use HttpExchange\Request\Helpers\RequestHelper;
 use HttpExchange\Request\UploadedFile;
+use HttpExchange\Request\Uri;
 
 /**
  * Class Request.
