@@ -1,7 +1,7 @@
 {
   "name": "antonkalmykov/http-exchange",
   "type": "library",
-  "description": "ItCourses Framework HttpExchange Component",
+  "description": "Request/Response component based on 'PSR-7: HTTP message interfaces' for ItCourses Framework",
   "keywords": [],
   "homepage": "https://github.com/kalmykovanton/HttpExchange",
   "license": "MIT",
