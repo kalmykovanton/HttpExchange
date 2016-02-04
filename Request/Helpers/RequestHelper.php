@@ -1,8 +1,6 @@
 <?php
 
 namespace HttpExchange\Request\Helpers;
-use HttpExchange\Request\Uri;
-
 
 /**
  * Class RequestHelper.
