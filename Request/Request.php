@@ -5,8 +5,10 @@ namespace HttpExchange\Request;
 use InvalidArgumentException;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use HttpExchange\Request\Components\ServerRequestComponent;
 use HttpExchange\Request\Helpers\RequestHelper;
+use HttpExchange\Request\UploadedFile;
 
 /**
  * Class Request.
