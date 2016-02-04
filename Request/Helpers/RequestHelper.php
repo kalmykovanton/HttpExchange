@@ -2,13 +2,6 @@
 
 namespace HttpExchange\Request\Helpers;
 
-use InvalidArgumentException;
-use Psr\Http\Message\UploadedFileInterface;
-use Psr\Http\Message\UriInterface;
-use HttpExchange\Request\UploadedFile;
-
-//use HttpExchange\Request\Uri;
-
 /**
  * Class RequestHelper.
  * @package HttpExchange\Request\Helpers
@@ -30,12 +23,8 @@ trait RequestHelper
      * @return UriInterface instanse
      * @throws \App\Http\Request\InvalidArgumentException
      */
-    private function createUriFromGlobals($uri)
+    private function createUriFromGlobals(UriInterface $uri)
     {
-        if (! $uri instanceof UriInterface) {
-            throw new InvalidArgumentException('Invalid instance  given. Must be UriInterface instanse.');
-        }
-
         // URI scheme.
         $scheme = $this->getFromServer('REQUEST_SCHEME');
         $https = $this->getFromServer('HTTPS');
