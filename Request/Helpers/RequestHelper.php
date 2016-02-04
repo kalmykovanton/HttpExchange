@@ -4,8 +4,9 @@ namespace HttpExchange\Request\Helpers;
 
 use InvalidArgumentException;
 use Psr\Http\Message\UploadedFileInterface;
+use Psr\Http\Message\UriInterface;
 use HttpExchange\Request\UploadedFile;
-use HttpExchange\Request\Uri;
+//use HttpExchange\Request\Uri;
 
 /**
  * Class RequestHelper.
