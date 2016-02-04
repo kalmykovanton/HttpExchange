@@ -6,7 +6,7 @@ use InvalidArgumentException;
 
 /**
  * Class ResponseHelper.
- * @package App\Http\Response\Helpers
+ * @package HttpExchange\Response\Helpers
  */
 trait ResponseHelper
 {

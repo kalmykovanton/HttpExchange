@@ -4,7 +4,7 @@ namespace HttpExchange\Common\Helpers;
 
 /**
  * Class MessageHelper.
- * @package App\Http\Common\Helpers
+ * @package HttpExchange\Common\Helpers
  */
 trait MessageHelper
 {

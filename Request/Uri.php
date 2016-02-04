@@ -8,7 +8,7 @@ use HttpExchange\Request\Helpers\UriHelper;
 
 /**
  * Class Uri.
- * @package App\Http\Request
+ * @package HttpExchange\Request
  */
 class Uri implements UriInterface
 {

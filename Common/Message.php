@@ -8,8 +8,8 @@ use Psr\Http\Message\StreamInterface;
 use HttpExchange\Common\Helpers\MessageHelper;
 
 /**
- * Class Message
- * @package App\Http\Common
+ * Class Message.
+ * @package HttpExchange\Common
  */
 abstract class Message implements MessageInterface
 {

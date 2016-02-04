@@ -9,7 +9,7 @@ use HttpExchange\Request\Uri;
 
 /**
  * Class RequestHelper.
- * @package App\Http\Request\Helpers
+ * @package HttpExchange\Request\Helpers
  */
 trait RequestHelper
 {

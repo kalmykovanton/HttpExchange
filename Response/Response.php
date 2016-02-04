@@ -10,7 +10,7 @@ use HttpExchange\Response\Helpers\ResponseHelper;
 
 /**
  * Class Response.
- * @package App\Http\Response
+ * @package HttpExchange\Response
  */
 class Response extends Message implements ResponseInterface
 {

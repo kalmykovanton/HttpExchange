@@ -10,7 +10,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * Class Request.
- * @package App\Http\Request
+ * @package HttpExchange\Request
  */
 class Request extends ServerRequestComponent
 {

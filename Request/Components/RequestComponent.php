@@ -9,7 +9,7 @@ use HttpExchange\Common\Message;
 
 /**
  * Class RequestComponent.
- * @package App\Http\Request\Components
+ * @package HttpExchange\Request\Components
  */
 abstract class RequestComponent extends Message implements RequestInterface
 {

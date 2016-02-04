@@ -9,8 +9,8 @@ use HttpExchange\Request\Helpers\UploadedFileHelper;
 use Psr\Http\Message\UploadedFileInterface;
 
 /**
- * Class UploadedFiles.
- * @package App\Http\Request
+ * Class UploadedFile.
+ * @package HttpExchange\Request
  */
 class UploadedFile implements UploadedFileInterface
 {

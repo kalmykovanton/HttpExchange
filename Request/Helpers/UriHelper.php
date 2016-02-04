@@ -6,7 +6,7 @@ use InvalidArgumentException;
 
 /**
  * Class UriHelper.
- * @package App\Http\Request\Helpers
+ * @package HttpExchange\Request\Helpers
  */
 trait UriHelper
 {

@@ -6,7 +6,7 @@ use RuntimeException;
 
 /**
  * Class UploadedFileHelper.
- * @package App\Http\Request\Helpers
+ * @package HttpExchange\Request\Helpers
  */
 trait UploadedFileHelper
 {

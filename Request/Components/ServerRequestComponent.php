@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Class ServerRequestComponent.
- * @package App\Http\Request\Components
+ * @package HttpExchange\Request\Components
  */
 abstract class ServerRequestComponent extends RequestComponent implements ServerRequestInterface
 {

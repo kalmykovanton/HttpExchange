@@ -7,8 +7,8 @@ use RuntimeException;
 use Psr\Http\Message\StreamInterface;
 
 /**
- * Class Stream describes a data stream.
- * @package App\Http\Request
+ * Class Stream.
+ * @package HttpExchange\Common
  */
 class Stream implements StreamInterface
 {
