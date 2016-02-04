@@ -89,6 +89,12 @@ trait ResponseHelper
      */
     private function checkStatusCode($statusCode)
     {
+        if (! is_numeric($statusCode)) {
+            throw new InvalidArgumentException(
+                'Status code must be a numeric.'
+            );
+        }
+
         $statusCode = (int) $statusCode;
         $pattern = '/^[1-5]{1}[0-9]{1}[0-9]{1}/';
 
@@ -99,6 +105,21 @@ trait ResponseHelper
             throw new InvalidArgumentException(
                 'Status code must be a valid 3-digit integer.
                 See: https://tools.ietf.org/html/rfc7231.'
+            );
+        }
+    }
+
+    /**
+     * Check whether reason phrase is a string.
+     *
+     * @param $reasonPhrase     Http reason phrase.
+     * @throws \InvalidArgumentException    If reason phrase not a string.
+     */
+    private function checkReasonPhrase($reasonPhrase)
+    {
+        if (! is_string($reasonPhrase)) {
+            throw new InvalidArgumentException(
+                'Reason phrase must be a string.'
             );
         }
     }
