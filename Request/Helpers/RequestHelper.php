@@ -1,6 +1,8 @@
 <?php
 
 namespace HttpExchange\Request\Helpers;
+use HttpExchange\Request\Uri;
+
 
 /**
  * Class RequestHelper.
@@ -23,7 +25,7 @@ trait RequestHelper
      * @return UriInterface instanse
      * @throws \App\Http\Request\InvalidArgumentException
      */
-    private function createUriFromGlobals(UriInterface $uri)
+    private function createUriFromGlobals(Uri $uri)
     {
         // URI scheme.
         $scheme = $this->getFromServer('REQUEST_SCHEME');
