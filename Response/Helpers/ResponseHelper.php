@@ -2,7 +2,7 @@
 
 namespace HttpExchange\Response\Helpers;
 
-use InvalidArgumentException;
+use \InvalidArgumentException;
 
 /**
  * Class ResponseHelper.
@@ -85,6 +85,8 @@ trait ResponseHelper
      *
      * @See https://tools.ietf.org/html/rfc7231
      * @param $statusCode   Status code. Must be 3-digit integer.
+     * @return int          Status code if valid.
+     *
      * @throws \InvalidArgumentException    For invalid status code.
      */
     private function checkStatusCode($statusCode)
@@ -107,12 +109,15 @@ trait ResponseHelper
                 See: https://tools.ietf.org/html/rfc7231.'
             );
         }
+
+        return $statusCode;
     }
 
     /**
      * Check whether reason phrase is a string.
-     *
      * @param $reasonPhrase     Http reason phrase.
+     * @return string           Reason phrase if valid.
+     *
      * @throws \InvalidArgumentException    If reason phrase not a string.
      */
     private function checkReasonPhrase($reasonPhrase)
@@ -122,6 +127,8 @@ trait ResponseHelper
                 'Reason phrase must be a string.'
             );
         }
+
+        return $reasonPhrase;
     }
 
     /**

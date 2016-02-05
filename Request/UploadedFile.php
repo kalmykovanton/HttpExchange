@@ -2,11 +2,12 @@
 
 namespace HttpExchange\Request;
 
-use InvalidArgumentException;
-use RuntimeException;
+use \InvalidArgumentException;
+use \RuntimeException;
+use Psr\Http\Message\UploadedFileInterface;
+use Psr\Http\Message\StreamInterface;
 use HttpExchange\Common\Stream;
 use HttpExchange\Request\Helpers\UploadedFileHelper;
-use Psr\Http\Message\UploadedFileInterface;
 
 /**
  * Class UploadedFile.
@@ -61,7 +62,7 @@ class UploadedFile implements UploadedFileInterface
     /**
      * Stream.
      *
-     * @var null|StreamInterface
+     * @var null|StreamInterface instance
      */
     protected $stream;
 

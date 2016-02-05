@@ -2,7 +2,7 @@
 
 namespace HttpExchange\Request\Helpers;
 
-use RuntimeException;
+use \RuntimeException;
 
 /**
  * Class UploadedFileHelper.
@@ -18,7 +18,7 @@ trait UploadedFileHelper
      * to be compatible with this application.
      * @see https://github.com/zendframework/zend-diactoros
      *
-     * @param $path                 Path to write.
+     * @param $path                 Path to write with file name.
      * @throws RuntimeException     On Error.
      */
     private function writeFromStream($path)

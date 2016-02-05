@@ -2,6 +2,11 @@
 
 namespace HttpExchange\Request\Helpers;
 
+use \InvalidArgumentException;
+use Psr\Http\Message\UploadedFileInterface;
+use Psr\Http\Message\UriInterface;
+use HttpExchange\Request\UploadedFile;
+
 /**
  * Class RequestHelper.
  * @package HttpExchange\Request\Helpers
@@ -20,10 +25,9 @@ trait RequestHelper
      * Collect URI information from PHP's superglobals.
      *
      * @param UriInterface $uri
-     * @return UriInterface instanse
-     * @throws \App\Http\Request\InvalidArgumentException
+     * @return object
      */
-    private function createUriFromGlobals(Uri $uri)
+    private function createUriFromGlobals(UriInterface $uri)
     {
         // URI scheme.
         $scheme = $this->getFromServer('REQUEST_SCHEME');
@@ -207,7 +211,7 @@ trait RequestHelper
             throw new InvalidArgumentException('HTTP method must be a string.');
         }
 
-        if (!array_key_exists(strtoupper($method))) {
+        if (! array_key_exists(strtoupper($method), $this->allowedMethods)) {
             throw new InvalidArgumentException(
                 'Unsupported HTTP method provided.
                 This application supports: GET, POST, PUT, PATH or DELETE.'

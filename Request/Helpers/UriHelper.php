@@ -2,7 +2,7 @@
 
 namespace HttpExchange\Request\Helpers;
 
-use InvalidArgumentException;
+use \InvalidArgumentException;
 
 /**
  * Class UriHelper.
@@ -43,7 +43,7 @@ trait UriHelper
         $this->host         = isset($uriParts['host'])     ? $uriParts['host']     : '';
         $this->port         = isset($uriParts['port'])     ? $uriParts['port']     : null;
         $this->path         = isset($uriParts['path'])     ? $this->urlCharEncode('path', $uriParts['path']) : '';
-        $this->query  = isset($uriParts['query'])    ? $this->filterQuery($uriParts['query']) : '';
+        $this->query        = isset($uriParts['query'])    ? $this->filterQuery($uriParts['query']) : '';
         $this->fragment     = isset($uriParts['fragment']) ? $this->filterFragment($uriParts['fragment']) : '';
 
         if (isset($uriParts['pass'])) {

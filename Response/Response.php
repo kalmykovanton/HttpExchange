@@ -2,7 +2,7 @@
 
 namespace HttpExchange\Response;
 
-use InvalidArgumentException;
+use \InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use HttpExchange\Common\Message;
@@ -90,9 +90,8 @@ class Response extends Message implements ResponseInterface
             $this->checkReasonPhrase($reasonPhrase);
         }
 
-        $this->checkStatusCode($code);
         $clone = clone $this;
-        $clone->statusCode = (int) $code;
+        $clone->statusCode = $this->checkStatusCode($code);
 
         if ($reasonPhrase === '') {
             $clone->reasonPhrase = $this->reasonPhrases[$code];

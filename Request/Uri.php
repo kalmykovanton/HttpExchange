@@ -2,7 +2,7 @@
 
 namespace HttpExchange\Request;
 
-use InvalidArgumentException;
+use \InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 use HttpExchange\Request\Helpers\UriHelper;
 

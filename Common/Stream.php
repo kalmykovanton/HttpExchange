@@ -2,8 +2,8 @@
 
 namespace HttpExchange\Common;
 
-use InvalidArgumentException;
-use RuntimeException;
+use \InvalidArgumentException;
+use \RuntimeException;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -49,7 +49,6 @@ class Stream implements StreamInterface
             }, E_WARNING);
             $this->resource = fopen($stream, $mode);
             restore_error_handler();
-            return;
         } else {
             throw new InvalidArgumentException(
                 'Invalid stream provided. Must be a string stream identifier or resource.'

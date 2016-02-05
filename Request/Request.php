@@ -2,14 +2,11 @@
 
 namespace HttpExchange\Request;
 
-use InvalidArgumentException;
+use \InvalidArgumentException;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
-use Psr\Http\Message\UploadedFileInterface;
 use HttpExchange\Request\Components\ServerRequestComponent;
 use HttpExchange\Request\Helpers\RequestHelper;
-use HttpExchange\Request\UploadedFile;
-use HttpExchange\Request\Uri;
 
 /**
  * Class Request.
@@ -21,7 +18,7 @@ class Request extends ServerRequestComponent
 
     /**
      * Contain server environment from PHP's
-     * superglobal $_SERVER.
+     * super global $_SERVER.
      *
      * @var array
      */
@@ -115,7 +112,7 @@ class Request extends ServerRequestComponent
 
     /**
      * Looking for a given value
-     * in PHP's superglobal $_SERVER.
+     * in PHP's super global $_SERVER.
      *
      * @param string $value
      * @return string

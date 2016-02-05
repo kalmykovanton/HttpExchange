@@ -2,7 +2,7 @@
 
 namespace HttpExchange\Common;
 
-use InvalidArgumentException;
+use \InvalidArgumentException;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 use HttpExchange\Common\Helpers\MessageHelper;
@@ -24,7 +24,7 @@ abstract class Message implements MessageInterface
 
     /**
      * List of all headers received
-     * from superglobal $_SERVER,
+     * from super global $_SERVER,
      * as array of key => array with values.
      *
      * @var array
@@ -43,7 +43,7 @@ abstract class Message implements MessageInterface
      */
     protected function __construct()
     {
-        // Extract HTTP protocol version from superglobal $_SERVER.
+        // Extract HTTP protocol version from super global $_SERVER.
         $this->protocolVersion = str_replace('HTTP/', '', $_SERVER['SERVER_PROTOCOL']);
     }
 
