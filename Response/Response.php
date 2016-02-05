@@ -86,10 +86,6 @@ class Response extends Message implements ResponseInterface
             );
         }
 
-        if ($reasonPhrase !== '') {
-            $this->checkReasonPhrase($reasonPhrase);
-        }
-
         $clone = clone $this;
         $clone->statusCode = $this->checkStatusCode($code);
 
@@ -97,7 +93,8 @@ class Response extends Message implements ResponseInterface
             $clone->reasonPhrase = $this->reasonPhrases[$code];
             return $clone;
         }
-        $clone->reasonPhrase = $reasonPhrase;
+
+        $clone->reasonPhrase = $this->checkReasonPhrase($reasonPhrase);
         return $clone;
     }
 
