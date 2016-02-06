@@ -58,6 +58,8 @@ class Stream implements StreamInterface
                 'Invalid stream provided. Must be a string stream identifier or resource.'
             );
         }
+
+        return $this->resource;
     }
 
     /**
