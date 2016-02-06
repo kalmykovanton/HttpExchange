@@ -42,7 +42,7 @@ class Stream implements StreamInterface
         $this->stream = $stream;
 
         if (is_resource($stream)) {
-            return $this->resource = $stream;
+            $this->resource = $stream;
         }
 
         if (is_string($stream)) {
@@ -59,7 +59,7 @@ class Stream implements StreamInterface
             );
         }
 
-        return $this->resource;
+        return $this;
     }
 
     /**
