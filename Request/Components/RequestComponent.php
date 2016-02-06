@@ -5,6 +5,7 @@ namespace HttpExchange\Request\Components;
 use \InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\RequestInterface;
+use HttpExchange\Request\Uri;
 use HttpExchange\Common\Message;
 
 /**
@@ -37,10 +38,10 @@ abstract class RequestComponent extends Message implements RequestInterface
     protected $replacedMethod = '';
 
     /**
-     * Contain UriInterface instance.
+     * Contain Uri instance.
      * Created in Request __construct().
      *
-     * @var null|UriInterface
+     * @var null|Uri
      */
     protected $uri;
 
@@ -138,9 +139,8 @@ abstract class RequestComponent extends Message implements RequestInterface
      */
     public function withMethod($method)
     {
-        $this->validateMethod($method);
         $clone = clone $this;
-        $clone->realMethod = $method;
+        $clone->realMethod = $this->validateMethod($method);
         return $clone;
     }
 
@@ -150,7 +150,7 @@ abstract class RequestComponent extends Message implements RequestInterface
      * {@inheritdoc}
      *
      * @see http://tools.ietf.org/html/rfc3986#section-4.3
-     * @return UriInterface     Returns a UriInterface instance
+     * @return Uri              Returns a UriInterface instance
      *                          representing the URI of the request.
      */
     public function getUri()

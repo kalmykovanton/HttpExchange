@@ -27,13 +27,17 @@ class Stream implements StreamInterface
     protected $stream;
 
     /**
-     * Stream constructor.
+     * Create new stream.
      *
-     * @param string|resource $stream   String stream target or stream resource.
-     * @param string $mode              Mode with which to open stream.
+     * NOTE: This method is not a part of PSR-7 recommendations.
+     *
+     * @param string|resource $stream     String stream target or stream resource.
+     * @param string $mode                Mode with which to open stream.
+     * @return resource
+     *
      * @throws InvalidArgumentException
      */
-    public function __construct($stream, $mode = 'r')
+    public function createStream($stream, $mode = 'r')
     {
         $this->stream = $stream;
 

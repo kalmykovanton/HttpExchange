@@ -3,8 +3,7 @@
 namespace HttpExchange\Request;
 
 use \InvalidArgumentException;
-use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UriInterface;
+use HttpExchange\Common\Stream;
 use HttpExchange\Request\Components\ServerRequestComponent;
 use HttpExchange\Request\Helpers\RequestHelper;
 
@@ -27,12 +26,10 @@ class Request extends ServerRequestComponent
     /**
      * Request constructor.
      *
-     * Example: $request = new Request(new Stream('php://input', 'rb'), new Uri());.
-     *
-     * @param StreamInterface $stream
-     * @param UriInterface $uri
+     * @param Stream $stream
+     * @param Uri $uri
      */
-    public function __construct(StreamInterface $stream, UriInterface $uri)
+    public function __construct(Stream $stream, Uri $uri)
     {
         parent::__construct();
         // Server environment.
@@ -42,7 +39,7 @@ class Request extends ServerRequestComponent
         // URI.
         $this->uri = $this->createUriFromGlobals($uri);
         // Row stream.
-        $this->stream = $stream;
+        $this->stream = $stream->createStream('php://input', 'rb');
         // HTTP real method.
         $this->realMethod = $this->getFromServer('REQUEST_METHOD');
         // Parsed body.

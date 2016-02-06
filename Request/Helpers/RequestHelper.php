@@ -4,7 +4,7 @@ namespace HttpExchange\Request\Helpers;
 
 use \InvalidArgumentException;
 use Psr\Http\Message\UploadedFileInterface;
-use Psr\Http\Message\UriInterface;
+use HttpExchange\Request\Uri;
 use HttpExchange\Request\UploadedFile;
 
 /**
@@ -24,10 +24,10 @@ trait RequestHelper
     /**
      * Collect URI information from PHP's superglobals.
      *
-     * @param UriInterface $uri
-     * @return object
+     * @param Uri $uri
+     * @return Uri
      */
-    private function createUriFromGlobals(UriInterface $uri)
+    private function createUriFromGlobals(Uri $uri)
     {
         // URI scheme.
         $scheme = $this->getFromServer('REQUEST_SCHEME');
@@ -203,10 +203,7 @@ trait RequestHelper
      */
     private function validateMethod($method)
     {
-        if ($method === null) {
-            return;
-        }
-
+        $method = strtoupper($method);
         if (! is_string($method)) {
             throw new InvalidArgumentException('HTTP method must be a string.');
         }
