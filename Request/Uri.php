@@ -473,16 +473,4 @@ class Uri implements UriInterface
 
         return $uriString;
     }
-
-    /**
-     * This is dummy method,
-     * it is not part of the PSR-7: HTTP message interfaces.
-     *
-     * @param $name
-     * @param $value
-     */
-    public function __set($name, $value)
-    {
-        // Dummy act.
-    }
 }

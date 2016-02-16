@@ -46,6 +46,7 @@ class Stream implements StreamInterface
         }
 
         if (is_string($stream)) {
+            // if there is a file open error, catch it
             set_error_handler(function ($errno, $errstr) {
                 throw new InvalidArgumentException(
                     'Invalid file provided for stream. Must be a valid path with valid permissions.'
@@ -401,16 +402,5 @@ class Stream implements StreamInterface
         }
 
         return $metadata[$key];
-    }
-
-    /**
-     * This is dummy method.
-     *
-     * @param $name
-     * @param $value
-     */
-    public function __set($name, $value)
-    {
-        // Dummy act.
     }
 }

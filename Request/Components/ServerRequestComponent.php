@@ -131,7 +131,7 @@ abstract class ServerRequestComponent extends RequestComponent implements Server
      *
      * {@inheritdoc}
      *
-     * @param array     An array tree of UploadedFileInterface instances.
+     * @param array $uploadedFiles          An array tree of UploadedFileInterface instances.
      * @return self
      * @throws \InvalidArgumentException    If an invalid structure is provided.
      */

@@ -34,17 +34,22 @@ class Response extends Message implements ResponseInterface
 
     /**
      * Response constructor.
+     *
      * @param Stream $stream        Stream instance.
      * @param string $statusCode    Response status code.
      * @param string $reasonPhrase  Response reason phrase.
      */
     public function __construct(Stream $stream, $statusCode = '', $reasonPhrase = '')
     {
+        // Message construct
         parent::__construct();
+
         // Row stream for response body.
         $this->stream = $stream->createStream('php://temp', 'wb+');
+
         // Set status code.
         $this->statusCode = ($statusCode === '') ? 200 : $this->checkStatusCode($statusCode);
+
         // Set reason phrase.
         $this->reasonPhrase = ($reasonPhrase === '') ? 'OK' : $this->checkReasonPhrase($reasonPhrase);
     }
@@ -135,21 +140,7 @@ class Response extends Message implements ResponseInterface
         // Send headers, if present in the object.
         $this->sendHeaders();
 
-        // Send cookies.
-        // TODO: send cookie method.
-
         // Send response body.
         $this->sendBody();
-    }
-
-    /**
-     * This is dummy method.
-     *
-     * @param $name
-     * @param $value
-     */
-    public function __set($name, $value)
-    {
-        // Dummy act.
     }
 }

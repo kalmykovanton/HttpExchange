@@ -4,7 +4,7 @@ namespace HttpExchange\Request\Helpers;
 
 use \InvalidArgumentException;
 use Psr\Http\Message\UploadedFileInterface;
-use HttpExchange\Request\Uri;
+use Psr\Http\Message\UriInterface;
 use HttpExchange\Request\UploadedFile;
 
 /**
@@ -24,10 +24,10 @@ trait RequestHelper
     /**
      * Collect URI information from PHP's superglobals.
      *
-     * @param Uri $uri
-     * @return Uri
+     * @param UriInterface $uri     Instance of UriInterface.
+     * @return object               Uri object.
      */
-    private function createUriFromGlobals(Uri $uri)
+    private function createUriFromGlobals(UriInterface $uri)
     {
         // URI scheme.
         $scheme = $this->getFromServer('REQUEST_SCHEME');
@@ -216,37 +216,6 @@ trait RequestHelper
         }
 
         return $method;
-    }
-
-    /**
-     * This method return any results of deserializing (if needed)
-     * the request body content (usually json structure).
-     * If request method POST and deserialization is not needed,
-     * this method returns structured content (usually array)
-     * from superglobal $_POST.
-     * A null value indicates the absence of body content.
-     *
-     * @return null|array
-     */
-    private function handleBody()
-    {
-        $httpMethod = strtoupper($this->getMethod());
-        $contentType = strtolower($this->getHeaderLine('Content-Type'));
-        $postPattern = '/(multipart\/form-data)|(application\/x-www-form-urlencoded)/';
-        $jsonPattern = '/application\/json/';
-
-        if (
-            $httpMethod === 'POST'
-            && preg_match($postPattern, $contentType)
-        ) {
-            return $_POST;
-        }
-
-        if (preg_match($jsonPattern, $contentType)) {
-            return json_decode($this->getBody()->getContents(), true);
-        }
-
-        return null;
     }
 
     /**

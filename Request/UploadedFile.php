@@ -80,6 +80,7 @@ class UploadedFile implements UploadedFileInterface
         if (is_string($stream)) {
             $this->file = $stream;
         }
+
         if (is_resource($stream)) {
             $this->stream = new Stream($stream);
         }
@@ -160,7 +161,8 @@ class UploadedFile implements UploadedFileInterface
      *
      * @see http://php.net/is_uploaded_file
      * @see http://php.net/move_uploaded_file
-     * @param string $targetPath            Path to which to move the uploaded file.
+     *
+     * @param string $path                  Path to which to move the uploaded file.
      * @throws \InvalidArgumentException    If the $path specified is invalid.
      * @throws \RuntimeException            On any error during the move operation.
      * @throws \RuntimeException            On the second or subsequent call to the method.
@@ -256,16 +258,5 @@ class UploadedFile implements UploadedFileInterface
     public function getClientMediaType()
     {
         return $this->mediaType;
-    }
-
-    /**
-     * This is dummy method.
-     *
-     * @param $name
-     * @param $value
-     */
-    public function __set($name, $value)
-    {
-        // Dummy act.
     }
 }

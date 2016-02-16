@@ -3,7 +3,9 @@
 namespace HttpExchange\Request;
 
 use \InvalidArgumentException;
-use HttpExchange\Common\Stream;
+use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
+use HttpExchange\Request\MethodHandlers\AbstractHandler;
 use HttpExchange\Request\Components\ServerRequestComponent;
 use HttpExchange\Request\Helpers\RequestHelper;
 
@@ -24,34 +26,71 @@ class Request extends ServerRequestComponent
     protected $serverEnv = [];
 
     /**
+     * Stores information about the
+     * method handlers of HTTP request.
+     *
+     * @var array
+     */
+    protected $methodHandlers = [];
+
+    /**
      * Request constructor.
      *
-     * @param Stream $stream
-     * @param Uri $uri
+     * Array of handlers for HTTP methods may look like this:
+     * $methodHandlers = [
+     *   'postHandler' => new \HttpExchange\Request\MethodHandlers\PostHandler(),
+     *   'putHandler' => new \HttpExchange\Request\MethodHandlers\PutHandler(),
+     *   'patchHandler' => new \HttpExchange\Request\MethodHandlers\PatchHandler(),
+     *   'deleteHandler' => new \HttpExchange\Request\MethodHandlers\DeleteHandler()
+     * ];
+     *
+     * @param StreamInterface $stream   Object which contains incoming stream.
+     * @param UriInterface $uri         Object which contains URI parts.
+     * @param array $methodHandlers     Handlers for HTTP methods.
      */
-    public function __construct(Stream $stream, Uri $uri)
+    public function __construct(StreamInterface $stream, UriInterface $uri, array $methodHandlers)
     {
+        // Message construct
         parent::__construct();
+
         // Server environment.
         $this->serverEnv = $this->normalizeServer($_SERVER);
+
         // Headers.
         $this->headers = $this->normalizeHeaders($this->serverEnv);
+
         // URI.
         $this->uri = $this->createUriFromGlobals($uri);
+
         // Row stream.
         $this->stream = $stream->createStream('php://input', 'rb');
+
         // HTTP real method.
-        $this->realMethod = $this->getFromServer('REQUEST_METHOD');
-        // Parsed body.
-        $this->parsedBody = $this->handleBody();
+        $this->realMethod = strtoupper($this->getFromServer('REQUEST_METHOD'));
+
         // HTTP replaced method (by html form input field '_method').
-        $this->replacedMethod = strtoupper($this->input('_method'));
-        // Get params if present.
-        $this->queryParams = (isset($_GET)) ? $_GET : [];
+        $this->replacedMethod = strtoupper(strtoupper($this->input('_method')));
+
         // Cookie if present.
         $this->cookies = (isset($_COOKIE)) ? $_COOKIE : [];
-        // Uploaded files if present.
-        $this->uploadedFiles = (isset($_FILES)) ? $this->normalizeUploadedFiles($_FILES) : [];
+
+        // Get params if present.
+        $this->queryParams = (isset($_GET)) ? $_GET : [];
+
+        // processing incoming HTTP requests by methods:
+        // POST, PUT, PATCH, DELETE
+        if ($this->getMethod() !== 'GET') {
+            // register HTTP methods handlers
+            $this->registerMethodHandler($methodHandlers);
+            // notification of all handlers of this incoming request
+            $requestBody = $this->notify($this);
+            // get parsed body (if exists) from handler
+            $this->parsedBody = $requestBody['parsedBody'];
+            // get uploaded files (if exists) from handler
+            if (! empty($requestBody['uploadedFiles'])) {
+                $this->uploadedFiles = $this->normalizeUploadedFiles($requestBody['uploadedFiles']);
+            }
+        }
     }
 
     /**
@@ -111,6 +150,8 @@ class Request extends ServerRequestComponent
      * Looking for a given value
      * in PHP's super global $_SERVER.
      *
+     * NOTE: This method is not a part of PSR-7 recommendations.
+     *
      * @param string $value
      * @return string
      */
@@ -126,13 +167,61 @@ class Request extends ServerRequestComponent
     }
 
     /**
-     * This is dummy method.
+     * Register HTTP methods handlers for processing incoming HTTP request.
+     * Given array may look like: [
+     *                               'methodHandlerName' => new methodHandlerObject
+     *                             ]
      *
-     * @param $name
-     * @param $value
+     * @param array $methodHandlers     Array of handlers for HTTP methods.
+     * @return void
+     * @throws InvalidArgumentException if method alias not a string, if given
+     * handler not instance of AbstractHandler or if method's alias already
+     * registered.
      */
-    public function __set($name, $value)
+    protected function registerMethodHandler(array $methodHandlers)
     {
-        // Dummy act.
+        foreach ($methodHandlers as $alias => $handler) {
+            if (! is_string($alias)) {
+                throw new InvalidArgumentException('Alias of HTTP method must be a string.');
+            }
+
+            if (! $handler instanceof AbstractHandler) {
+                throw new InvalidArgumentException('HTTP method handler must be an instance of AbstractHandler.');
+            }
+
+            if (array_key_exists($alias, $this->methodHandlers)) {
+                throw new InvalidArgumentException('Given alias of HTTP method already registered.');
+            }
+
+            $this->methodHandlers[$alias] = $handler;
+        }
+    }
+
+    /**
+     * This method notifies all attached handlers
+     * of this incoming request.
+     *
+     * NOTE: This method is not a part of PSR-7 recommendations.
+     *
+     * @param object $request       $this.
+     * @return array $requestBody   Current request body.
+     * @throws InvalidArgumentException if given $request not instance of $this.
+     */
+    protected function notify($request)
+    {
+        if (! $request instanceof $this) {
+            throw new InvalidArgumentException('Transferred instance must be $this.');
+        }
+
+        if (! empty($this->methodHandlers)) {
+            foreach ($request->methodHandlers as $handler) {
+                // updates handler and get
+                // request body from it (if exists)
+                $requestBody = $handler->update($request);
+                if ($requestBody) {
+                    return $requestBody;
+                }
+            }
+        }
     }
 }
