@@ -13,7 +13,7 @@ use HttpExchange\Request\UploadedFile;
  */
 trait RequestHelper
 {
-    private $allowedMethods = [
+    protected $allowedMethods = [
         'GET' => true,
         'POST' => true,
         'PUT' => true,
@@ -27,7 +27,7 @@ trait RequestHelper
      * @param UriInterface $uri     Instance of UriInterface.
      * @return object               Uri object.
      */
-    private function createUriFromGlobals(UriInterface $uri)
+    protected function createUriFromGlobals(UriInterface $uri)
     {
         // URI scheme.
         $scheme = $this->getFromServer('REQUEST_SCHEME');
@@ -72,7 +72,7 @@ trait RequestHelper
      * @param string $value
      * @return string
      */
-    private function trimQuery($value = '')
+    protected function trimQuery($value = '')
     {
         if (strpos($value, '?') !== false) {
             return substr_replace($value, '', strpos($value, '?'));
@@ -86,7 +86,7 @@ trait RequestHelper
      *
      * @return string Host name.
      */
-    private function getHost()
+    protected function getHost()
     {
         if ($this->hasHeader('Host')) {
             return $this->getHeaderLine('Host');
@@ -129,13 +129,13 @@ trait RequestHelper
         foreach ($server as $key => $value) {
             if (strpos($key, 'HTTP_') === 0) {
                 $key = substr($key, 5);
-                $key = $this->normalizeHeaderName($key);
+                $key = $this->parseHeaderName($key);
                 $headers[$key] = [$value];
             }
 
             // CONTENT_* are not prefixed with HTTP_
             elseif (isset($specialHeaders[$key])) {
-                $key = $this->normalizeHeaderName($key);
+                $key = $this->parseHeaderName($key);
                 $headers[$key] = [$value];
             }
         }
@@ -148,7 +148,7 @@ trait RequestHelper
      * @param string $name
      * @return mixed|string
      */
-    protected function normalizeHeaderName($name)
+    protected function parseHeaderName($name)
     {
         $name = str_replace('_', ' ', strtolower($name));
         $name = ucwords($name);
@@ -169,7 +169,7 @@ trait RequestHelper
      * @param array $server     Array $_SERVER
      * @return array            Normalized $_SERVER
      */
-    private function normalizeServer(array $server)
+    protected function normalizeServer(array $server)
     {
         // This seems to be the only way to get the Authorization header on Apache
         $apacheRequestHeaders = 'apache_request_headers';
@@ -201,7 +201,7 @@ trait RequestHelper
      *
      * @throws InvalidArgumentException on invalid HTTP method.
      */
-    private function validateMethod($method)
+    protected function validateMethod($method)
     {
         $method = strtoupper($method);
         if (! is_string($method)) {
@@ -233,7 +233,7 @@ trait RequestHelper
      * @return array
      * @throws InvalidArgumentException for unrecognized values
      */
-    private function normalizeUploadedFiles(array $files)
+    protected function normalizeUploadedFiles(array $files)
     {
         $normalized = [];
 
@@ -273,13 +273,13 @@ trait RequestHelper
      * @param array $value      $_FILES structure
      * @return array|UploadedFileInterface
      */
-    private function createUploadedFilesInstance(array $value)
+    protected function createUploadedFilesInstance(array $value)
     {
         if (is_array($value['tmp_name'])) {
             return $this->normalizeNestedFiles($value);
         }
 
-        return new UploadedFile(
+        return $this->uploadedFile->createUploadedFile(
             $value['tmp_name'],
             $value['size'],
             $value['error'],
@@ -302,7 +302,7 @@ trait RequestHelper
      * @param array $files
      * @return UploadedFileInterface[]
      */
-    private function normalizeNestedFiles(array $files = [])
+    protected function normalizeNestedFiles(array $files = [])
     {
         $normalizedFiles = [];
 
@@ -332,7 +332,7 @@ trait RequestHelper
      * @param array $uploadedFiles
      * @throws InvalidArgumentException if any leaf is not an UploadedFileInterface instance.
      */
-    private function filterUploadedFiles(array $uploadedFiles)
+    protected function filterUploadedFiles(array $uploadedFiles)
     {
         foreach ($uploadedFiles as $file) {
             if (is_array($file)) {

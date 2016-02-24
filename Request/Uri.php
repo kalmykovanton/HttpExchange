@@ -74,7 +74,7 @@ class Uri implements UriInterface
             throw new InvalidArgumentException('URI must be a string.');
         }
 
-        if (! empty($uri)) {
+        if (! empty($uriString)) {
             $this->splitUriString($uriString);
         }
     }
@@ -230,7 +230,7 @@ class Uri implements UriInterface
      */
     public function withScheme($scheme)
     {
-        if (!is_string($scheme)) {
+        if (! is_string($scheme)) {
             throw new InvalidArgumentException('HTTP scheme value must be a string.');
         }
 
@@ -284,7 +284,7 @@ class Uri implements UriInterface
      */
     public function withHost($host)
     {
-        if (!is_string($host)) {
+        if (! is_string($host)) {
             throw new InvalidArgumentException('Given value must be a string.');
         }
 
@@ -316,7 +316,7 @@ class Uri implements UriInterface
      */
     public function withPort($port)
     {
-        if (!is_numeric($port) && !is_null($port)) {
+        if (! is_numeric($port) && ! is_null($port)) {
             throw new InvalidArgumentException(
                 'Invalid port specified; must be an integer, an integer string, or null.'
             );

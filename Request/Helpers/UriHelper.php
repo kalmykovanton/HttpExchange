@@ -16,7 +16,7 @@ trait UriHelper
      *
      * @var array
      */
-    private $allowedSchemes = [
+    protected $allowedSchemes = [
         'http' => 80,
         'https' => 443,
     ];
@@ -25,14 +25,14 @@ trait UriHelper
      * Parse URI into its parts,
      * and set the properties of Uri instanse.
      *
-     * @param $uriString    Row URI string
+     * @param string $uriString    Row URI string
      */
-    private function splitUriString($uriString)
+    protected function splitUriString($uriString)
     {
         $uriParts = parse_url($uriString);
 
         if ($uriParts === false) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'The source URI string does not satisfy the requirements.
                 See: https://tools.ietf.org/html/rfc3986.'
             );
@@ -56,7 +56,7 @@ trait UriHelper
      *
      * @param string $value
      */
-    private function checkHost($value = '')
+    protected function checkHost($value = '')
     {
         return preg_match('/[a-zA-Z0-9.-]{1,253}/', $value);
     }
@@ -72,7 +72,7 @@ trait UriHelper
      * @param string $scheme    Scheme name.
      * @return string           Filtered scheme.
      */
-    private function filterScheme($scheme)
+    protected function filterScheme($scheme)
     {
         $scheme = strtolower($scheme);
         $scheme = preg_replace('#:(\/\/)?$#', '', $scheme);
@@ -81,7 +81,7 @@ trait UriHelper
             return '';
         }
 
-        if (!array_key_exists($scheme, $this->allowedSchemes)) {
+        if (! array_key_exists($scheme, $this->allowedSchemes)) {
             throw new InvalidArgumentException(
                 'Unsupported scheme, must be any empty string or http/https.'
             );
@@ -102,7 +102,7 @@ trait UriHelper
      * @param string $query
      * @return string
      */
-    private function filterQuery($query)
+    protected function filterQuery($query)
     {
         if (! empty($query) && strpos($query, '?') === 0) {
             $query = substr($query, 1);
@@ -136,10 +136,10 @@ trait UriHelper
      * @param string $value
      * @return array A value with exactly two elements, key and value
      */
-    private function splitQueryValue($value)
+    protected function splitQueryValue($value)
     {
         $data = explode('=', $value, 2);
-        if (1 === count($data)) {
+        if (count($data) === 1) {
             $data[] = null;
         }
         return $data;
@@ -156,7 +156,7 @@ trait UriHelper
      * @param null|string $fragment
      * @return string
      */
-    private function filterFragment($fragment)
+    protected function filterFragment($fragment)
     {
         if (! empty($fragment) && strpos($fragment, '#') === 0) {
             $fragment = substr($fragment, 1);
@@ -177,21 +177,21 @@ trait UriHelper
      * to be compatible with this application.
      * @see https://github.com/zendframework/zend-diactoros
      *
-     * @param $flag             What filter (path or query)
+     * @param string $flag      What filter (path or query)
      * @param string $value     Value filtering (path, query string or fragment)
      * @return string           Filtered value
      *
      * @throws InvalidArgumentException
      */
-    private function urlCharEncode($flag, $value = '')
+    protected function urlCharEncode($flag, $value = '')
     {
-        if (!is_string($flag)) {
+        if (! is_string($flag)) {
             throw new InvalidArgumentException(
                 'Flag must be a string.'
             );
         }
 
-        if (!is_string($value)) {
+        if (! is_string($value)) {
             throw new InvalidArgumentException(
                 'Value must be a string.'
             );

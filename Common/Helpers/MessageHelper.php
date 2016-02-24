@@ -14,7 +14,7 @@ trait MessageHelper
      * @param string $name
      * @return mixed|string
      */
-    private function normalizeHeaderName($name)
+    protected function normalizeHeaderName($name)
     {
         $name = str_replace(['_', '-'], ' ', strtolower($name));
         $name = ucwords($name);
@@ -33,7 +33,7 @@ trait MessageHelper
      * @param array $array
      * @return bool
      */
-    private function arrayContainsOnlyStrings(array $array)
+    protected function arrayContainsOnlyStrings(array $array)
     {
         return array_reduce(
             $array,

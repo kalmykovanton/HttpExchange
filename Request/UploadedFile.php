@@ -6,7 +6,6 @@ use \InvalidArgumentException;
 use \RuntimeException;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\StreamInterface;
-use HttpExchange\Common\Stream;
 use HttpExchange\Request\Helpers\UploadedFileHelper;
 
 /**
@@ -60,29 +59,40 @@ class UploadedFile implements UploadedFileInterface
     protected $size;
 
     /**
-     * Stream.
+     * Stream instance.
      *
-     * @var null|StreamInterface instance
+     * @var StreamInterface instance
      */
     protected $stream;
 
     /**
-     * UploadedFiles constructor.
+     * UploadedFile constructor.
      *
-     * @param $stream           Filename or stream.
-     * @param $size             Uploaded file size.
-     * @param $errorFlag        Uploaded errors.
-     * @param null $filename    Filename.
-     * @param null $mediaType   File media type.
+     * @param StreamInterface $stream
      */
-    public function __construct($stream, $size, $errorFlag, $filename = null, $mediaType = null)
+    public function __construct(StreamInterface $stream)
+    {
+        $this->stream = $stream;
+    }
+
+    /**
+     * Create new UploadedFile instance.
+     *
+     * @param mixed $stream         Filename or stream.
+     * @param integer $size         Uploaded file size.
+     * @param integer $errorFlag    Uploaded errors.
+     * @param null $filename        Filename.
+     * @param null $mediaType       File media type.
+     * @return $this                New UploadedFile inctance.
+     */
+    public function createUploadedFile($stream, $size, $errorFlag, $filename = null, $mediaType = null)
     {
         if (is_string($stream)) {
             $this->file = $stream;
         }
 
         if (is_resource($stream)) {
-            $this->stream = new Stream($stream);
+            $this->stream = $this->stream->createStream($stream);
         }
 
         if (! $this->file && ! $this->stream) {
@@ -125,6 +135,8 @@ class UploadedFile implements UploadedFileInterface
             );
         }
         $this->mediaType = $mediaType;
+
+        return clone $this;
     }
 
     /**
@@ -150,7 +162,7 @@ class UploadedFile implements UploadedFileInterface
             return $this->stream;
         }
 
-        $this->stream = new Stream($this->file);
+        $this->stream = $this->stream->createStream($this->file);
         return $this->stream;
     }
 

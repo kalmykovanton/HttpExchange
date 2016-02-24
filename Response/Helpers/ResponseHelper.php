@@ -15,7 +15,7 @@ trait ResponseHelper
      *
      * @var array
      */
-    private $reasonPhrases = array(
+    protected $reasonPhrases = array(
         // INFORMATIONAL
         100 => 'Continue',
         101 => 'Switching Protocols',
@@ -84,12 +84,12 @@ trait ResponseHelper
      * Check status code for compliance with RFC 7231.
      *
      * @See https://tools.ietf.org/html/rfc7231
-     * @param $statusCode   Status code. Must be 3-digit integer.
-     * @return int          Status code if valid.
+     * @param int $statusCode   Status code. Must be 3-digit integer.
+     * @return int              Status code if valid.
      *
      * @throws \InvalidArgumentException    For invalid status code.
      */
-    private function checkStatusCode($statusCode)
+    protected function checkStatusCode($statusCode)
     {
         if (! is_numeric($statusCode)) {
             throw new InvalidArgumentException(
@@ -115,12 +115,12 @@ trait ResponseHelper
 
     /**
      * Check whether reason phrase is a string.
-     * @param $reasonPhrase     Http reason phrase.
-     * @return string           Reason phrase if valid.
+     * @param string $reasonPhrase  Http reason phrase.
+     * @return string               Reason phrase if valid.
      *
      * @throws \InvalidArgumentException    If reason phrase not a string.
      */
-    private function checkReasonPhrase($reasonPhrase)
+    protected function checkReasonPhrase($reasonPhrase)
     {
         if (! is_string($reasonPhrase)) {
             throw new InvalidArgumentException(
@@ -137,7 +137,7 @@ trait ResponseHelper
      * Otherwise if status code not exists in the object
      * do nothing.
      */
-    private function sendStatusCodeAndReasonPhrase()
+    protected function sendStatusCodeAndReasonPhrase()
     {
         if ($this->statusCode) {
             header(
@@ -150,7 +150,7 @@ trait ResponseHelper
      * Generate and send headers (e.g. Cache-Control: no-cache).
      * Otherwise, if headers array is empty do nothing.
      */
-    private function sendHeaders()
+    protected function sendHeaders()
     {
         $headers = $this->getHeaders();
 
@@ -167,7 +167,7 @@ trait ResponseHelper
     /**
      * Send response body.
      */
-    private function sendBody()
+    protected function sendBody()
     {
         // Send response body variant 1
         // New output stream.

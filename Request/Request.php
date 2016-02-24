@@ -4,6 +4,7 @@ namespace HttpExchange\Request;
 
 use \InvalidArgumentException;
 use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 use HttpExchange\Request\MethodHandlers\AbstractHandler;
 use HttpExchange\Request\Components\ServerRequestComponent;
@@ -34,24 +35,40 @@ class Request extends ServerRequestComponent
     protected $methodHandlers = [];
 
     /**
+     * UploadedFile instance.
+     * 
+     * @var object
+     */
+    protected $uploadedFile;
+
+    /**
      * Request constructor.
      *
      * Array of handlers for HTTP methods may look like this:
      * $methodHandlers = [
-     *   'postHandler' => new \HttpExchange\Request\MethodHandlers\PostHandler(),
-     *   'putHandler' => new \HttpExchange\Request\MethodHandlers\PutHandler(),
-     *   'patchHandler' => new \HttpExchange\Request\MethodHandlers\PatchHandler(),
-     *   'deleteHandler' => new \HttpExchange\Request\MethodHandlers\DeleteHandler()
-     * ];
+     *                     methodHandlerObject,
+     *                     anotherMethodHandlerObject
+     *                   ];
      *
-     * @param StreamInterface $stream   Object which contains incoming stream.
-     * @param UriInterface $uri         Object which contains URI parts.
-     * @param array $methodHandlers     Handlers for HTTP methods.
+     * @param StreamInterface $stream               Object which contains incoming stream.
+     * @param UriInterface $uri                     Object which contains URI parts.
+     * @param UploadedFileInterface $uploadedFile   UploadedFile instance.
+     * @param array $methodHandlers                 Handlers for HTTP methods.
      */
-    public function __construct(StreamInterface $stream, UriInterface $uri, array $methodHandlers)
+    public function __construct(
+        StreamInterface $stream, 
+        UriInterface $uri, 
+        UploadedFileInterface $uploadedFile, 
+        array $methodHandlers)
     {
-        // Message construct
+        // Message construct.
         parent::__construct();
+
+        // Store UploadedFile instance.
+        $this->uploadedFile = $uploadedFile;
+
+        // Store Stream instance.
+        $this->stream = $stream->createStream('php://input', 'rb');
 
         // Server environment.
         $this->serverEnv = $this->normalizeServer($_SERVER);
@@ -61,9 +78,6 @@ class Request extends ServerRequestComponent
 
         // URI.
         $this->uri = $this->createUriFromGlobals($uri);
-
-        // Row stream.
-        $this->stream = $stream->createStream('php://input', 'rb');
 
         // HTTP real method.
         $this->realMethod = strtoupper($this->getFromServer('REQUEST_METHOD'));
@@ -169,31 +183,23 @@ class Request extends ServerRequestComponent
     /**
      * Register HTTP methods handlers for processing incoming HTTP request.
      * Given array may look like: [
-     *                               'methodHandlerName' => new methodHandlerObject
+     *                               methodHandlerObject,
+     *                               anotherMethodHandlerObject
      *                             ]
      *
      * @param array $methodHandlers     Array of handlers for HTTP methods.
      * @return void
-     * @throws InvalidArgumentException if method alias not a string, if given
-     * handler not instance of AbstractHandler or if method's alias already
-     * registered.
+     * @throws InvalidArgumentException if given handler not instance of 
+     * AbstractHandler.
      */
     protected function registerMethodHandler(array $methodHandlers)
     {
-        foreach ($methodHandlers as $alias => $handler) {
-            if (! is_string($alias)) {
-                throw new InvalidArgumentException('Alias of HTTP method must be a string.');
-            }
-
+        foreach ($methodHandlers as $handler) {
             if (! $handler instanceof AbstractHandler) {
                 throw new InvalidArgumentException('HTTP method handler must be an instance of AbstractHandler.');
             }
 
-            if (array_key_exists($alias, $this->methodHandlers)) {
-                throw new InvalidArgumentException('Given alias of HTTP method already registered.');
-            }
-
-            $this->methodHandlers[$alias] = $handler;
+            $this->methodHandlers[] = $handler;
         }
     }
 

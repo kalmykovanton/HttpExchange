@@ -86,10 +86,8 @@ abstract class AbstractHandler
     {
         $contentType = strtolower($this->request->getHeaderLine('Content-Type'));
         $jsonPattern = '/application\/json/';
-        if (preg_match($jsonPattern, $contentType)) {
-            return true;
-        }
-        return false;
+        
+        return (preg_match($jsonPattern, $contentType)) ? true : false;
     }
 
     /**
@@ -103,10 +101,8 @@ abstract class AbstractHandler
     {
         $contentType = strtolower($this->request->getHeaderLine('Content-Type'));
         $formDataPattern = '/multipart\/form-data/';
-        if (preg_match($formDataPattern, $contentType)) {
-            return true;
-        }
-        return false;
+        
+        return (preg_match($formDataPattern, $contentType)) ? true : false;
     }
 
     /**
@@ -120,10 +116,8 @@ abstract class AbstractHandler
     {
         $contentType = strtolower($this->request->getHeaderLine('Content-Type'));
         $formUrlencodedPattern = '/application\/x-www-form-urlencoded/';
-        if (preg_match($formUrlencodedPattern, $contentType)) {
-            return true;
-        }
-        return false;
+        
+        return (preg_match($formUrlencodedPattern, $contentType)) ? true : false;
     }
 
     /**
@@ -139,12 +133,14 @@ abstract class AbstractHandler
         }
 
         $params = [];
+        
         foreach (explode('&', $rowURL) as $part) {
             $param = explode("=", $part);
             if ($param) {
                 $params[urldecode($param[0])] = urldecode($param[1]);
             }
         }
+        
         return $params;
     }
 
@@ -223,6 +219,7 @@ abstract class AbstractHandler
             // increase body parts counter
             $contentCounter += 1;
         }
+        
         return $separatedBody;
     }
 
@@ -235,12 +232,14 @@ abstract class AbstractHandler
     protected function pullParsedBody(array $separatedBody)
     {
         $parsedBody = [];
+        
         foreach ($separatedBody as $bodyPart) {
             if (isset($bodyPart['Content-Disposition']['filename'])) {
                 continue;
             }
             $parsedBody[$bodyPart['Content-Disposition']['name']] = $bodyPart['body'];
         }
+        
         return $parsedBody;
     }
 
@@ -253,6 +252,7 @@ abstract class AbstractHandler
     protected function pullUploadedFiles(array $separatedBody)
     {
         $files = [];
+        
         foreach ($separatedBody as $bodyPart) {
             // if isset file in requets's separated message body
             if (isset($bodyPart['Content-Disposition']['filename'])) {
@@ -273,6 +273,7 @@ abstract class AbstractHandler
                 $files[$bodyPart['Content-Disposition']['name']]['type'] = $bodyPart['Content-Type'][0];
             }
         }
+        
         return $files;
     }
 }

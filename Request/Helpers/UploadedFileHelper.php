@@ -18,10 +18,10 @@ trait UploadedFileHelper
      * to be compatible with this application.
      * @see https://github.com/zendframework/zend-diactoros
      *
-     * @param $path                 Path to write with file name.
+     * @param string $path          Path to write with file name.
      * @throws RuntimeException     On Error.
      */
-    private function writeFromStream($path)
+    protected function writeFromStream($path)
     {
         $handle = fopen($path, 'wb+');
         if (false === $handle) {

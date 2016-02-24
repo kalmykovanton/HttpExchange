@@ -137,7 +137,7 @@ abstract class Message implements MessageInterface
     public function getHeader($name)
     {
         // Check header name.
-        if (!is_string($name)) {
+        if (! is_string($name)) {
             throw new InvalidArgumentException(
                 'Invalid argument. Header name must be a string (e.g., "Host").'
             );
@@ -145,7 +145,7 @@ abstract class Message implements MessageInterface
 
         // Normalize header name.
         $name = $this->normalizeHeaderName($name);
-
+        
         return (array_key_exists($name, $this->headers)) ? $this->headers[$name] : [];
     }
 
@@ -163,7 +163,7 @@ abstract class Message implements MessageInterface
     public function getHeaderLine($name)
     {
         // Check header name.
-        if (!is_string($name)) {
+        if (! is_string($name)) {
             throw new InvalidArgumentException(
                 'Invalid argument. Header name must be a string (e.g., "Host").'
             );
